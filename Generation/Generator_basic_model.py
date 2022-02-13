@@ -92,7 +92,7 @@ class Generator(nn.Module):
             nn.Conv1d(256, 64, 1),
             nn.LeakyReLU(neg, inplace=True),
             #nn.Dropout(0.5),
-            nn.Conv1d(64, 3, 1)
+[]            nn.Conv1d(64, 3)
             )
 
     def forward(self, x):
@@ -110,6 +110,6 @@ class Generator(nn.Module):
         print("x:", x.shape)
         x = torch.cat([x, x_feat], 1)
         x = self.mlp(x)
-        x = x.transpose(1, 2)
+        #x = x.transpose(1, 2)
 
         return x
