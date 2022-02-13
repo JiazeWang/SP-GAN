@@ -104,7 +104,10 @@ class Generator(nn.Module):
         x = self.fc2(x)
 
         x_feat = torch.max(x, 2, keepdim=True)[0]
+        print("x_feat",x_feat.shape)
         x_feat = x_feat.view(-1, 2048, 1).repeat(1, 1, self.num_point)
+        print("x_feat_new", x_feat.shape)
+        print("x:", x.shape)
         x = torch.cat([x, x_feat], 1)
         x = self.mlp(x)
 
