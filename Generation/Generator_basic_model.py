@@ -83,16 +83,16 @@ class Generator(nn.Module):
 
 
         self.mlp = nn.Sequential(
-            nn.Linear(dim+2048, 512),
+            nn.Conv1d(dim+1024, 512),
             nn.LeakyReLU(neg, inplace=True),
             #nn.Dropout(0.5),
-            nn.Linear(512, 256),
+            nn.Conv1d(512, 256),
             nn.LeakyReLU(neg, inplace=True),
             #nn.Dropout(0.5),
-            nn.Linear(256, 64),
+            nn.Conv1d(256, 64),
             nn.LeakyReLU(neg, inplace=True),
             #nn.Dropout(0.5),
-            nn.Linear(64, 3)
+            nn.Conv1d(64, 3)
             )
 
     def forward(self, x):
@@ -104,11 +104,12 @@ class Generator(nn.Module):
         x = self.fc2(x)
 
         x_feat = torch.max(x, 2, keepdim=True)[0]
-        print("x_feat",x_feat.shape)
-        x_feat = x_feat.view(-1, 2048, 1).repeat(1, 1, self.num_point)
+        print("x_feat", x_feat.shape)
+        x_feat = x_feat.view(-1, 1024, 1).repeat(1, 1, self.num_point)
         print("x_feat_new", x_feat.shape)
         print("x:", x.shape)
         x = torch.cat([x, x_feat], 1)
         x = self.mlp(x)
+        x = x.transpose(1, 2)
 
         return x
