@@ -160,8 +160,6 @@ class Generator(nn.Module):
     def forward(self, x, z):
 
         B,N,_ = x.size()
-        print("x.shape:", x.shape)
-        print("z.shape:", z.shape)
         if self.opts.z_norm:
             z = z / (z.norm(p=2, dim=-1, keepdim=True)+1e-8)
 

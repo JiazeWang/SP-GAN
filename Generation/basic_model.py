@@ -27,7 +27,7 @@ from Common import loss_utils
 from tensorboardX import SummaryWriter
 from Common.visu_utils import plot_pcd_three_views,point_cloud_three_views,plot_pcd_multi_rows
 from tqdm import tqdm
-from Generation.Generator import Generator
+from Generation.Generator_basic_model import Generator
 from Generation.Discriminator import Discriminator
 
 from Common.network_utils import *
@@ -344,7 +344,7 @@ class Model(object):
         grid_x = 8
         grid_y = 8
 
-        x = self.sphere_generator(bs=grid_y)
+        #x = self.sphere_generator(bs=grid_y)
 
 
         pcds_list = []
@@ -354,7 +354,7 @@ class Model(object):
             with torch.no_grad():
                 #z = self.noise_generator(bs=grid_y)
                 z = self.fix_z[i*grid_y:(i+1)*grid_y]
-                out_pc = self.G(x, z)
+                out_pc = self.G(z)
                 out_pc = out_pc.transpose(2, 1)
                 sample_pcs = out_pc.cpu().detach().numpy()
                 sample_pcs = normalize_point_cloud(sample_pcs)

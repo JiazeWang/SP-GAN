@@ -156,13 +156,19 @@ class Generator(nn.Module):
         self.lrelu2 = nn.LeakyReLU(neg_2)
 
 
+        self.generate_point_from_noise = nn.Sequential(
+            Linear(self.nz, 3),
+            nn.BatchNorm1d(3),
+            nn.LeakyReLU(neg, inplace=True),
+        )
 
-    def forward(self, x, z):
 
-        B,N,_ = x.size()
+    def forward(self, z):
+
+        B, N, _ = z.size()
         if self.opts.z_norm:
             z = z / (z.norm(p=2, dim=-1, keepdim=True)+1e-8)
-
+        x = self.generate_point_from_noise(z)
         style = torch.cat([x, z], dim=-1)
         style = style.transpose(2, 1).contiguous()
         style = self.head(style)  # B,C,N
