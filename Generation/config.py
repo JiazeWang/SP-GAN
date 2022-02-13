@@ -1,12 +1,12 @@
-#!/usr/bin/env python  
-#-*- coding:utf-8 _*-  
-""" 
+#!/usr/bin/env python
+#-*- coding:utf-8 _*-
+"""
 @author:liruihui
 @file: config_cls.py
 @time: 2019/09/17
 @contact: ruihuili.lee@gmail.com
 @github: https://liruihui.github.io/
-@description: 
+@description:
 """
 
 import argparse
@@ -44,8 +44,8 @@ def check_args(args):
 root = os.getcwd()[:5]
 # define the H5 data folder
 data_root_part = root+"/lirh/pointcloud2/dataset/Generation/shapenetcore_partanno_segmentation_benchmark_v0/"
-data_root_h5 = root+"/lirh/pointcloud2/dataset/Generation/H5/"
-
+#data_root_h5 = root+"/lirh/pointcloud2/dataset/Generation/H5/"
+data_root_h5 = "/research/pheng4/qdliu/jzwang/codes/SP-GAN/train_h5"
 parser = argparse.ArgumentParser()
 parser.add_argument('--phase', type=str, default='train', help='train or test ?')
 parser.add_argument('--workers', type=int, default=4, help='number of data loading workers')
@@ -149,5 +149,3 @@ parser.add_argument('--lr_t', type=float, default=1e-4, help='Float value for le
 parser.add_argument('--lr_p', type=float, default=0.0001, help='Initial learning rate [default: 0.0001]')
 
 opts = check_args(parser.parse_args())
-
-
