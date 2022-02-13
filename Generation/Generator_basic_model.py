@@ -49,6 +49,7 @@ class Generator(nn.Module):
     def __init__(self, opts, num_point=2048):
         super(Generator, self).__init__()
         self.num_point = num_point
+        self.opts = opts
         BN = True
         self.small_d = opts.small_d
 
