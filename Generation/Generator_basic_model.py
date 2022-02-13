@@ -54,13 +54,13 @@ class Generator(nn.Module):
         self.small_d = opts.small_d
 
         self.mlps = nn.Sequential(
-            nn.Conv1d(128, 64, 1),
+            nn.Linear(128, 64, 1),
             nn.BatchNorm1d(64),
             nn.LeakyReLU(neg, inplace=True),
-            nn.Conv1d(64, 128, 1),
+            nn.Linear(64, 128, 1),
             nn.BatchNorm1d(128),
             nn.LeakyReLU(neg, inplace=True),
-            nn.Conv1d(128, 256, 1),
+            nn.Linear(128, 256, 1),
             nn.BatchNorm1d(256),
             nn.LeakyReLU(neg, inplace=True),
         )
@@ -76,7 +76,7 @@ class Generator(nn.Module):
             dim = dim//2
 
         self.fc2 = nn.Sequential(
-            nn.Conv1d(256,dim,1),
+            nn.Linear(256,dim,1),
             nn.BatchNorm1d(dim),
             nn.LeakyReLU(neg, inplace=True)
         )
