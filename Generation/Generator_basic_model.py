@@ -83,16 +83,16 @@ class Generator(nn.Module):
 
 
         self.mlp = nn.Sequential(
-            nn.Conv1d(dim+1024, 512),
+            nn.Conv1d(dim+1024, 512, 1),
             nn.LeakyReLU(neg, inplace=True),
             #nn.Dropout(0.5),
-            nn.Conv1d(512, 256),
+            nn.Conv1d(512, 256, 1),
             nn.LeakyReLU(neg, inplace=True),
             #nn.Dropout(0.5),
-            nn.Conv1d(256, 64),
+            nn.Conv1d(256, 64, 1),
             nn.LeakyReLU(neg, inplace=True),
             #nn.Dropout(0.5),
-            nn.Conv1d(64, 3)
+            nn.Conv1d(64, 3, 1)
             )
 
     def forward(self, x):
