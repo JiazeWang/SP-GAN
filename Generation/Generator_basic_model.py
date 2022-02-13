@@ -54,13 +54,13 @@ class Generator(nn.Module):
         self.small_d = opts.small_d
 
         self.mlps = nn.Sequential(
-            nn.Linear(128, 64, 1),
+            nn.Conv1d(128, 64, 1),
             nn.BatchNorm1d(64),
             nn.LeakyReLU(neg, inplace=True),
-            nn.Linear(64, 128, 1),
+            nn.Conv1d(64, 128, 1),
             nn.BatchNorm1d(128),
             nn.LeakyReLU(neg, inplace=True),
-            nn.Linear(128, 256, 1),
+            nn.Conv1d(128, 256, 1),
             nn.BatchNorm1d(256),
             nn.LeakyReLU(neg, inplace=True),
         )
@@ -76,7 +76,7 @@ class Generator(nn.Module):
             dim = dim//2
 
         self.fc2 = nn.Sequential(
-            nn.Linear(256,dim,1),
+            nn.Conv1d(256,dim,1),
             nn.BatchNorm1d(dim),
             nn.LeakyReLU(neg, inplace=True)
         )
@@ -97,6 +97,7 @@ class Generator(nn.Module):
 
     def forward(self, x):
         B,N,_ = x.size()
+        x = x.transpose(1, 2)
         if self.opts.z_norm:
             x = x / (x.norm(p=2, dim=-1, keepdim=True)+1e-8)
         x = self.mlps(x)
