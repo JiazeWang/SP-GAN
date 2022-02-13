@@ -92,7 +92,7 @@ class Generator(nn.Module):
             nn.Conv1d(256, 64, 1),
             nn.LeakyReLU(neg, inplace=True),
             #nn.Dropout(0.5),
-            nn.Conv1d(64, 3)
+            nn.Conv1d(64, 3, 1)
             )
 
     def forward(self, x):
