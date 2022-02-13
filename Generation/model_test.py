@@ -24,7 +24,7 @@ cudnn.benchnark=True
 
 # seed = 123
 # seed = 2021
-seed = 1990
+seed = 10086
 random.seed(seed)
 np.random.seed(seed)
 torch.manual_seed(seed)
@@ -243,7 +243,7 @@ class Model(object):
         for i in range(sample_num):
 
             noise = np.random.normal(0, 0.2, (number, self.opts.nz))
-
+            print("noise", noise)
             color = np.zeros((number+1, self.opts.np, 3))
             color_c = np.squeeze(ball,axis=0)
             color_c = np.minimum(color_c,1.0)
@@ -982,11 +982,11 @@ class Model(object):
 
         print(" [*] Reading checkpoints...")
         #checkpoint_dir = os.path.join(checkpoint_dir, self.model_dir, self.model_name)
-        
+
         # ----------------- load G -------------------
         if not self.opts.pretrain_model_G is None:
             resume_file_G = os.path.join(checkpoint_dir, self.opts.pretrain_model_G)
-            flag_G = os.path.isfile(resume_file_G), 
+            flag_G = os.path.isfile(resume_file_G),
             if flag_G == False:
                 print('G--> Error: no checkpoint directory found!')
                 exit()
@@ -1007,6 +1007,3 @@ class Model(object):
 
         print(" [*] Success to load model --> {} & {}".format(self.opts.pretrain_model_G, self.opts.pretrain_model_D))
         return True, G_epoch
-
-
-
