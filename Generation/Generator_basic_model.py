@@ -158,8 +158,6 @@ class Generator(nn.Module):
 
         self.generate_point_from_noise = nn.Sequential(
             nn.Linear(128, 3),
-            nn.BatchNorm1d(3),
-            nn.LeakyReLU(neg, inplace=True),
         )
 
 
