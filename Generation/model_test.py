@@ -243,7 +243,7 @@ class Model(object):
         for i in range(sample_num):
 
             noise = np.random.normal(0, 0.2, (number, self.opts.nz))
-            print("noise", noise)
+            #print("noise", noise)
             color = np.zeros((number+1, self.opts.np, 3))
             color_c = np.squeeze(ball,axis=0)
             color_c = np.minimum(color_c,1.0)

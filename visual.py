@@ -19,8 +19,12 @@ from Generation.config import opts
 if __name__ == '__main__':
 
 
-    opts.pretrain_model_G = "Chair_G.pth"
-    opts.log_dir = "trained_models"
+    #opts.pretrain_model_G = "Chair_G.pth"
+    opts.pretrain_model_G = "airplane_G.pth"
+    #opts.pretrain_model_G = "animal-pose_G.pth"
+    #opts.pretrain_model_G = "bottle_G.pth"
+    #opts.pretrain_model_G = "guitar_G.pth"
+    #opts.log_dir = "trained_models"
 
     model = Model(opts)
 
