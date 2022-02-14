@@ -27,7 +27,8 @@ from Common import loss_utils
 from tensorboardX import SummaryWriter
 from Common.visu_utils import plot_pcd_three_views,point_cloud_three_views,plot_pcd_multi_rows
 from tqdm import tqdm
-from Generation.Generator import Generator
+#from Generation.Generator import Generator
+from Generation.Generator_advanced_model import Generator
 from Generation.Discriminator import Discriminator
 
 from Common.network_utils import *
@@ -90,7 +91,7 @@ class Model(object):
         self.D.cuda()
 
         """ Training """
-        
+
         beta1 = 0.5
         beta2 = 0.99
         self.optimizerG = optim.Adam(filter(lambda p: p.requires_grad, self.G.parameters()), lr=self.opts.lr_g, betas=(beta1, beta2))
@@ -465,11 +466,11 @@ class Model(object):
 
         print(" [*] Reading checkpoints...")
         #checkpoint_dir = os.path.join(checkpoint_dir, self.model_dir, self.model_name)
-        
+
         # ----------------- load G -------------------
         if not self.opts.pretrain_model_G is None:
             resume_file_G = os.path.join(checkpoint_dir, self.opts.pretrain_model_G)
-            flag_G = os.path.isfile(resume_file_G), 
+            flag_G = os.path.isfile(resume_file_G),
             if flag_G == False:
                 print('G--> Error: no checkpoint directory found!')
                 exit()
@@ -530,6 +531,3 @@ class Model(object):
         # torch.save(G, os.path.join(opt.outd, opt.outm, f'G_nch-{opt.nch}_epoch-{epoch}.pth'))
         # torch.save(D, os.path.join(opt.outd, opt.outm, f'D_nch-{opt.nch}_epoch-{epoch}.pth'))
         # torch.save(Gs, os.path.join(opt.outd, opt.outm, f'Gs_nch-{opt.nch}_epoch-{epoch}.pth'))
-
-
-

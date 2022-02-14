@@ -27,7 +27,7 @@ from Common import loss_utils
 from tensorboardX import SummaryWriter
 from Common.visu_utils import plot_pcd_three_views,point_cloud_three_views,plot_pcd_multi_rows
 from tqdm import tqdm
-from Generation.Generator import Generator
+from Generation.Generator_basic_model import Generator
 from Generation.Discriminator import Discriminator
 
 from Common.network_utils import *
@@ -90,7 +90,7 @@ class Model(object):
         self.D.cuda()
 
         """ Training """
-        
+
         beta1 = 0.5
         beta2 = 0.99
         self.optimizerG = optim.Adam(filter(lambda p: p.requires_grad, self.G.parameters()), lr=self.opts.lr_g, betas=(beta1, beta2))
@@ -228,7 +228,7 @@ class Model(object):
 
         d_para = 1.0
         g_para = 1.0
-        x = self.sphere_generator(bs=self.opts.bs)
+        #x = self.sphere_generator(bs=self.opts.bs)
         self.fix_z = self.noise_generator(bs=64)
 
         for epoch in range(start_epoch, self.opts.max_epoch+1):
@@ -245,7 +245,7 @@ class Model(object):
                 real_points = Variable(data,requires_grad=True)
                 z = self.noise_generator(bs=self.opts.bs)
 
-                d_fake_preds =self.G(x, z)
+                d_fake_preds =self.G(z)
                 real_points = real_points.transpose(2, 1).cuda()
                 d_fake_preds = d_fake_preds.detach()
 
@@ -268,7 +268,7 @@ class Model(object):
                 self.optimizerG.zero_grad()
 
                 z = self.noise_generator(bs=self.opts.bs)
-                g_fake_preds =self.G(x, z)
+                g_fake_preds =self.G(z)
 
 
                 g_real_logit = self.D(real_points)
@@ -344,7 +344,7 @@ class Model(object):
         grid_x = 8
         grid_y = 8
 
-        x = self.sphere_generator(bs=grid_y)
+        #x = self.sphere_generator(bs=grid_y)
 
 
         pcds_list = []
@@ -354,7 +354,7 @@ class Model(object):
             with torch.no_grad():
                 #z = self.noise_generator(bs=grid_y)
                 z = self.fix_z[i*grid_y:(i+1)*grid_y]
-                out_pc = self.G(x, z)
+                out_pc = self.G(z)
                 out_pc = out_pc.transpose(2, 1)
                 sample_pcs = out_pc.cpu().detach().numpy()
                 sample_pcs = normalize_point_cloud(sample_pcs)
@@ -465,11 +465,11 @@ class Model(object):
 
         print(" [*] Reading checkpoints...")
         #checkpoint_dir = os.path.join(checkpoint_dir, self.model_dir, self.model_name)
-        
+
         # ----------------- load G -------------------
         if not self.opts.pretrain_model_G is None:
             resume_file_G = os.path.join(checkpoint_dir, self.opts.pretrain_model_G)
-            flag_G = os.path.isfile(resume_file_G), 
+            flag_G = os.path.isfile(resume_file_G),
             if flag_G == False:
                 print('G--> Error: no checkpoint directory found!')
                 exit()
@@ -530,6 +530,3 @@ class Model(object):
         # torch.save(G, os.path.join(opt.outd, opt.outm, f'G_nch-{opt.nch}_epoch-{epoch}.pth'))
         # torch.save(D, os.path.join(opt.outd, opt.outm, f'D_nch-{opt.nch}_epoch-{epoch}.pth'))
         # torch.save(Gs, os.path.join(opt.outd, opt.outm, f'Gs_nch-{opt.nch}_epoch-{epoch}.pth'))
-
-
-
