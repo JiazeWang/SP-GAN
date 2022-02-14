@@ -117,7 +117,7 @@ class Generator(nn.Module):
         if self.opts.z_norm:
             x = x / (x.norm(p=2, dim=-1, keepdim=True)+1e-8)
         x = self.mlps(x)
-        z = self.self.mlps_z(z)
+        z = self.mlps_z(z)
         x = self.fc2(torch.cat([x, z], dim = 1))
         x_feat = torch.max(x, 2, keepdim=True)[0]
         #print("x_feat", x_feat.shape)
