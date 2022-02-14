@@ -111,7 +111,7 @@ class Generator(nn.Module):
             nn.Conv1d(64, 3, 1)
             )
 
-    def forward(self, x, z):
+    def forward(self, z, x):
         B,N,_ = x.size()
         x = x.transpose(1, 2)
         if self.opts.z_norm:
